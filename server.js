@@ -13,9 +13,17 @@ const app = express();
 app.use(express.json());
 
 
+const runtimeState = {
+  user: {
+    selectedModel: ``,
+  },
+  llm: {},
+};
 
-// ...
-// ...
+const updateRuntimeState = () => {};
+
+
+
 app.post(`/test-post`, async (req, res) => {
   console.log(`>>>>>>  /tets-post: `)
 
@@ -32,12 +40,9 @@ app.post(`/test-post`, async (req, res) => {
 
   console.log(`====================`)
 });
-// ...
-// ...
 
 
-
-
+// 
 // 
 // @NOTE:  Получить токен доступа  /gigachat/auth
 app.post(`/gigachat/auth`, async (req, res) => {
@@ -72,13 +77,6 @@ app.post(`/gigachat/auth`, async (req, res) => {
 
 
 
-
-
-
-// ...
-// ...
-// ...
-// ...
 // 
 // @NOTE:  Показать доступные модели  /gigachat/models
 app.get(`/gigachat/models`, async (req, res) => {
@@ -91,70 +89,37 @@ app.get(`/gigachat/models`, async (req, res) => {
     });
   }
 
-  res.json(response);
+  runtimeState.llm.gigachat = response.payload.models;
 
-
-
-  // try {
-
-
-
-  //   const data = await response.json();
-  //   const accessToken = data.access_token;
-  //   // console.log(`data>>>>>>>>>>`,  data  );
-
-  //   res.json({
-  //     "/gigachat/access": `OK`,
-  //     accessToken,
-  //   });
-  // } catch (catchedError) {
-  //   console.log(`catchedError ----------- `);
-  //   console.error(catchedError);
-  //   res.status(500).json({ error: 'Internal server error' });
-  // }
+  res.json({
+    ...response,
+    payload: {
+      ...response.payload,
+      runtimeState,
+    },
+  });
 });
 // 
 // 
+
+
+// 
+// @NOTE:  Пользовательский выбор основной LLM
+app.post(`/selectModel`, (req, res) => {
+  const selectedModel = req.body.selectedModel || ``;
+
+  runtimeState.user.selectedModel = selectedModel;
+  
+  res.json({
+    payload: {
+      selectedModel,
+      runtimeState,
+    },
+  });
+})
 // 
 // 
-
-// let options = {
-//   'method': 'GET',
-//   'hostname': 'gigachat.devices.sberbank.ru',
-//   'path': '/api/v1/models',
-//   'headers': {
-//     'Accept': 'application/json',
-//     'Authorization': 'Bearer <TOKEN>'
-//   },
-//   'maxRedirects': 20
-// };
-
-// const req = https.request(options, (res) => {
-//   let chunks = [];
-
-//   res.on("data", (chunk) => {
-//     chunks.push(chunk);
-//   });
-
-//   res.on("end", (chunk) => {
-//     let body = Buffer.concat(chunks);
-//     console.log(body.toString());
-//   });
-
-//   res.on("error", (error) => {
-//     console.error(error);
-//   });
-// });
-
-// req.end();
-// ...
-// ...
-// ...
-// ...
-// ...
-// ...
-
-
+// 
 
 
 
