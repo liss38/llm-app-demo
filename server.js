@@ -4,6 +4,7 @@ import {
   getGigachatAccessToken,
   getGigachatAvailableModels,
   postGigachatChatCompletions,
+  getGigachatBalance,
 } from './services/ai/gigachat/index.js'
 
 
@@ -16,7 +17,9 @@ app.use(express.json());
 
 const runtimeState = {
   user: {
+    userId: ``,
     selectedModel: ``,
+    settingsAndMeta: {},
   },
   llm: {},
 };
@@ -75,9 +78,7 @@ app.post(`/gigachat/auth`, async (req, res) => {
 // 
 // 
 // 
-
-
-
+// 
 // 
 // @NOTE:  Показать доступные модели  /gigachat/models
 app.get(`/gigachat/models`, async (req, res) => {
@@ -102,8 +103,32 @@ app.get(`/gigachat/models`, async (req, res) => {
 });
 // 
 // 
+// 
+// 
+// @NOTE:  Узнать информацию о балансе  /gigachat/balance
+app.get(`/gigachat/balance`, async (req, res) => {
+  const response = await getGigachatBalance();
+  console.log(` getGigachatBalance >>>>>>  `,  response  );
 
+  if (response.isError) {
+    return res.status(502).json({
+      ...response,
+    });
+  }
 
+  runtimeState.user.settingsAndMeta.gigachatBalance = response.payload.gigachatBalance;
+
+  res.json({
+    ...response,
+    payload: {
+      ...response.payload,
+      runtimeState,
+    },
+  });
+});
+// 
+// 
+// 
 // 
 // @NOTE:  Пользовательский выбор основной LLM
 app.post(`/selectModel`, (req, res) => {
