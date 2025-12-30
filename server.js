@@ -1,11 +1,17 @@
 import express from 'express';
 import dotenv from 'dotenv';
+
 import {
   getGigachatAccessToken,
   getGigachatAvailableModels,
   postGigachatChatCompletions,
   getGigachatBalance,
 } from './services/ai/gigachat/index.js'
+
+import {
+  cloudruBaseRequest,
+  postCloudruChatCompletions,
+} from './services/ai/cloudru/index.js';
 
 
 dotenv.config();
@@ -152,13 +158,26 @@ app.post(`/selectModel`, (req, res) => {
 // @NOTE:  POST /ask — пересылает вопрос в GigaChat
 app.post('/ask', async (req, res) => {
   try {
-    const { question } = req.body;
+    const { question, sourceFrom = `GigaChat` } = req.body;
     if (!question) {
       return res.status(400).json({ error: 'Field \"question\" is required' });
     }
 
-    const response = await postGigachatChatCompletions(question);
 
+    // 
+    // @TODO/REFACT:
+    console.log(`>>>>>>>> sourceFrom: `, sourceFrom);
+    const response = await (
+      sourceFrom === `CloudRu` 
+        ? postCloudruChatCompletions(question)
+        : postGigachatChatCompletions(question)
+    );
+    // ----
+    // 
+
+    
+    
+    
     if (response.isError) {
       return res.status(502).json({
         ...response,
