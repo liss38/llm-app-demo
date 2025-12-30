@@ -1,0 +1,28 @@
+# LLM Integration Standards
+## Services
+src/services/
+├── llm.service.ts     # OpenAI/GigaChat calls
+├── agent.service.ts   # Agent orchestration
+└── prompt.service.ts  # Template management
+
+## LLM Service Template
+```
+// src/services/llm.service.ts
+import OpenAI from 'openai';
+import { z } from 'zod';
+
+export class LlmService {
+private openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+async chat(prompt: string, options = {}) {
+const response = await this.openai.chat.completions.create({
+model: 'gpt-4o-mini',
+messages: [{ role: 'user', content: prompt }],
+stream: false,
+temperature: 0.1,
+max_tokens: 2000
+});
+return response.choices.message.content;
+}
+}
+```

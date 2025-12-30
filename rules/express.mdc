@@ -1,0 +1,30 @@
+# Express.js Architecture
+## Middleware Stack
+Order: helmet → cors → morgan → rateLimit → auth → validation
+
+## Router Structure
+src/routes/
+├── v1/
+│   ├── auth.routes.ts
+│   ├── chat.routes.ts
+│   └── agents.routes.ts
+
+## Controller Pattern
+```
+// src/controllers/chat.controller.ts
+import { Request, Response, NextFunction } from 'express';
+import { ChatService } from '../services/chat.service';
+
+export class ChatController {
+constructor(private chatService: ChatService) {}
+
+async chat(req: Request, res: Response, next: NextFunction) {
+try {
+const result = await this.chatService.chat(req.body);
+res.json(result);
+} catch (error) {
+next(error);
+}
+}
+}
+```

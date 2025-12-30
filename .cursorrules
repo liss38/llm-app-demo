@@ -1,0 +1,45 @@
+# Node.js/Express + LLM + AI Agents
+## Tech Stack
+- Runtime: Node.js 20.10+
+- Framework: Express 4.19+, TypeScript 5.4+
+- LLM: OpenAI GPT-4o, GigaChat, Anthropic Claude
+- Agents: LangChain.js 0.2+, LangGraph.js
+- Validation: Zod 3.23+
+- DB: Prisma 5.12+ + PostgreSQL/Redis
+- Auth: JWT + API Keys
+
+## Project Structure
+```bash
+src/
+├── app.ts # Express app + middleware
+├── server.ts # HTTP server + clustering
+├── controllers/ # Thin Express handlers
+│ ├── chat.controller.ts
+│ └── agents.controller.ts
+├── services/ # Business + LLM logic
+│ ├── llm.service.ts
+│ ├── agent.service.ts
+│ └── prompt.service.ts
+├── agents/ # AI Agent definitions
+│ ├── registry.ts # Agent registry
+│ ├── chat-agent.ts
+│ └── research-agent.ts
+├── middleware/ # Express middleware
+│ ├── auth.middleware.ts
+│ ├── rate-limit.middleware.ts
+│ └── validate-prompt.middleware.ts
+├── prompts/ # Prompt templates
+│ └── chat.prompt
+├── types/ # TypeScript interfaces
+└── utils/ # Helpers
+```
+
+
+## Coding Standards
+- Всегда async/await + try/catch
+- Controllers → Services → LLM/Agents (thin → fat)
+- LLM calls: JSON mode + structured output (Zod)
+- Streaming: Server-Sent Events для chat
+- Rate limiting: 10 req/min per IP для LLM endpoints
+- Logging: structured JSON logs (Pino)
+- Errors: custom classes с HTTP codes

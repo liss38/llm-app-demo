@@ -1,0 +1,5 @@
+# Multi-Agent Rules
+- LangChain.js или LangGraph.js
+- Agent registry: src/agents/registry.ts
+- Memory: Redis или in-memory для dev
+- Tools: всегда типизированные функции

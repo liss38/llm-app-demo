@@ -1,0 +1,5 @@
+# Node.js/Express + LLM Project
+Tech Stack: Node.js 20+, Express 4.19+, TypeScript, OpenAI
+Include: rules/*.mdc
+Structure: src/routes → controllers → services
+Rules Priority: auth > llm > express
