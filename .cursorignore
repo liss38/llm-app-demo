@@ -1,0 +1,74 @@
+# Зависимости (огромные, генерируемые)
+node_modules/
+jspm_packages/
+bower_components/
+web_modules/
+
+
+# Сборки и бандлы
+dist/
+build/
+.next/
+.nuxt/
+.svelte-kit/
+.output/
+.cache/
+.parcel-cache/
+.vite/
+
+
+# Локальные секреты (GigaChat API ключи, токены)
+.env
+.env.*
+.env.local
+!.env.example
+
+
+# Логи и отладка
+logs/
+*.log
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+
+# Покрытие тестов
+coverage/
+.nyc_output/
+*.lcov
+
+
+# IDE/редакторы
+.vscode/
+.cursor/
+.idea/
+*.swp
+*.swo
+
+
+# OS файлы
+.DS_Store
+
+Thumbs.db
+
+
+# Yarn v3+ (если используете)
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+
+
+# Runtime данные
+pids/
+*.pid
+*.pid.lock
+
+
+# Дополнительно для Express/API проектов
+*.tgz
+.eslintcache
+.stylelintcache
+.node_repl_history
